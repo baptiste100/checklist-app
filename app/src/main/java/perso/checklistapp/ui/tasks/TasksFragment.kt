@@ -4,17 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import perso.checklistapp.R
 import perso.checklistapp.databinding.FragmentTaskBinding
+import perso.checklistapp.viewmodel.TasksViewModel
 
-class TasksFragment : Fragment() {
+class TasksFragment : Fragment(R.layout.fragment_task) {
+
+    private val dataSet = arrayOf("Téléphone", "Ordinateur", "Chargeur")
 
     private var _binding: FragmentTaskBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -22,21 +25,28 @@ class TasksFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
+        val taskViewModel =
             ViewModelProvider(this).get(TasksViewModel::class.java)
 
         _binding = FragmentTaskBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setRecyclerView(view)
+    }
+
+    private fun setRecyclerView(view: View) {
+        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewTasks)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = TaskAdapter(dataSet)
     }
 }

@@ -1,4 +1,4 @@
-package perso.checklistapp.ui.tasks
+package perso.checklistapp.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
