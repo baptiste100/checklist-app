@@ -2,6 +2,7 @@ package perso.checklistapp.ui.tasks
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import perso.checklistapp.R
 import perso.checklistapp.ui.tasks.TaskViewHolder
@@ -16,7 +17,15 @@ class TaskAdapter(private val dataSet: Array<String>) : RecyclerView.Adapter<Tas
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        holder.getTextViewTask().text = dataSet[position]
+        holder.getCheckBoxTask().setOnCheckedChangeListener(null)
+        holder.getCheckBoxTask().text = dataSet[position]
+        holder.getCheckBoxTask().setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                //
+            } else {
+                //
+            }
+        }
     }
 
     override fun getItemCount(): Int {

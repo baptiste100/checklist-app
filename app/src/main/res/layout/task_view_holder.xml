@@ -1,12 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- src/main/res/layout/task_view_holder.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
-    
-    <TextView
-        android:id="@+id/textViewTask"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+
+    <CheckBox
+        android:id="@+id/checkBoxTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size"
+        android:padding="0dp"
+        android:layout_margin="0dp"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:checked="false" />
 
 </LinearLayout>

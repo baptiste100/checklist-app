@@ -1,5 +1,6 @@
 package perso.checklistapp.ui.tasks
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,10 +28,8 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
     ): View {
         val taskViewModel =
             ViewModelProvider(this).get(TasksViewModel::class.java)
-
         _binding = FragmentTaskBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         return root
     }
 
@@ -48,5 +47,11 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewTasks)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = TaskAdapter(dataSet)
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing)
+        recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                outRect.bottom = spacingInPixels
+            }
+        })
     }
 }
