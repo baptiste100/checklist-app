@@ -2,9 +2,12 @@ package perso.checklistapp.ui.tasks
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +18,10 @@ import perso.checklistapp.viewmodel.TasksViewModel
 
 class TasksFragment : Fragment(R.layout.fragment_task) {
 
-    private val dataSet = arrayOf("Téléphone", "Ordinateur", "Chargeur")
+    private val dataSet = mutableListOf("Téléphone", "Chargeur Tel", "Ordinateur", "Chargeur PC", "Livres", "Pain de mie", "Pomme")
+
+    private lateinit var recyclerViewTasks: RecyclerView
+    private lateinit var taskAdapter: TaskAdapter
 
     private var _binding: FragmentTaskBinding? = null
 
@@ -41,14 +47,21 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView(view)
+        val editTextNewTask = view.findViewById<EditText>(R.id.editTextNewTask);
+        view.findViewById<Button>(R.id.buttonAddTask)
+            .setOnClickListener {
+                dataSet.add(editTextNewTask.text.toString());
+                taskAdapter.notifyDataSetChanged()
+            }
     }
 
     private fun setRecyclerView(view: View) {
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewTasks)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = TaskAdapter(dataSet)
+        taskAdapter = TaskAdapter(dataSet)
+        val recyclerViewTasks: RecyclerView = view.findViewById(R.id.recyclerViewTasks)
+        recyclerViewTasks.layoutManager = LinearLayoutManager(context)
+        recyclerViewTasks.adapter = taskAdapter
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing)
-        recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
+        recyclerViewTasks.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                 outRect.bottom = spacingInPixels
             }

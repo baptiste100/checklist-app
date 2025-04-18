@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import perso.checklistapp.R
 import perso.checklistapp.ui.tasks.TaskViewHolder
 
-class TaskAdapter(private val dataSet: Array<String>) : RecyclerView.Adapter<TaskViewHolder>() {
+class TaskAdapter(private val dataSet: MutableList<String>) : RecyclerView.Adapter<TaskViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val view = LayoutInflater.from(parent.context)
