@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -52,7 +53,7 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun setRecyclerView(view: View) {
-        taskAdapter = TaskAdapter()
+        taskAdapter = TaskAdapter(viewModel)
         val recyclerViewTasks: RecyclerView = view.findViewById(R.id.recyclerViewTasks)
         recyclerViewTasks.layoutManager = LinearLayoutManager(context)
         recyclerViewTasks.adapter = taskAdapter
@@ -65,10 +66,9 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
             taskAdapter.submitList(tasks)
         }
 
-        view.findViewById<Button>(R.id.buttonAddTask)
-            .setOnClickListener {
-                addTask()
-            }
+        view.findViewById<Button>(R.id.buttonAddTask).setOnClickListener {
+            addTask()
+        }
     }
 
     private fun addTask() {

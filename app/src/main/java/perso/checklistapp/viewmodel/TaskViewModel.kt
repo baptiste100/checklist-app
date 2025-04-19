@@ -19,4 +19,8 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     fun insert(task: Task) = viewModelScope.launch(Dispatchers.IO) {
         _taskDao.insert(task)
     }
+
+    fun delete(task: Task) = viewModelScope.launch(Dispatchers.IO) {
+        _taskDao.delete(task)
+    }
 }

@@ -1,6 +1,7 @@
 package perso.checklistapp.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
@@ -13,4 +14,7 @@ interface TaskDao {
 
     @Insert
     fun insert(vararg task: Task)
+
+    @Delete
+    fun delete(task: Task)
 }

@@ -3,14 +3,16 @@ package perso.checklistapp.ui.tasks
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.DiffUtil
 import perso.checklistapp.R
 import perso.checklistapp.model.Task
 import perso.checklistapp.ui.tasks.TaskViewHolder
+import perso.checklistapp.viewmodel.TaskViewModel
 
-class TaskAdapter : ListAdapter<Task, TaskViewHolder>(DIFF_CALLBACK) {
+class TaskAdapter(private val viewModel: TaskViewModel) : ListAdapter<Task, TaskViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Task>() {
@@ -34,12 +36,13 @@ class TaskAdapter : ListAdapter<Task, TaskViewHolder>(DIFF_CALLBACK) {
         val task = getItem(position)
         holder.getCheckBoxTask().setOnCheckedChangeListener(null)
         holder.getCheckBoxTask().text = task.taskName
-        holder.getCheckBoxTask().setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                //
-            } else {
-                //
-            }
+        holder.getCheckBoxTask().setOnCheckedChangeListener { _, isChecked -> }
+        holder.getButtonDelete().setOnClickListener {
+            deleteTask(task)
         }
+    }
+
+    private fun deleteTask(task: Task) {
+        viewModel.delete(task)
     }
 }
