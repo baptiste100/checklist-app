@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -46,6 +47,7 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView(view)
+
         val editTextNewTask = view.findViewById<EditText>(R.id.editTextNewTask);
 
         viewModel.allTasks.observe(viewLifecycleOwner) { tasks ->
@@ -54,8 +56,12 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
 
         view.findViewById<Button>(R.id.buttonAddTask)
             .setOnClickListener {
-                val task = Task(0, editTextNewTask.text.toString())
-                viewModel.insert(task)
+                if (editTextNewTask.text.toString().isNotEmpty()) {
+                    val task = Task(0, editTextNewTask.text.toString())
+                    viewModel.insert(task)
+                } else {
+                    Toast.makeText(context, "Empty task name", Toast.LENGTH_SHORT).show()
+                }
             }
     }
 
