@@ -63,4 +63,5 @@ dependencies {
     kapt(libs.androidx.room.compiler)
     implementation("androidx.recyclerview:recyclerview:1.4.0")
     implementation("androidx.recyclerview:recyclerview-selection:1.1.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
 }
