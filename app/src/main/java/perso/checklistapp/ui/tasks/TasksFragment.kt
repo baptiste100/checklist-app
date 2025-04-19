@@ -72,11 +72,14 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun addTask() {
-        if (editTextNewTask.text.toString().isNotEmpty()) {
-            val task = Task(0, editTextNewTask.text.toString())
-            viewModel.insert(task)
-        } else {
-            Toast.makeText(context, "Empty task name", Toast.LENGTH_SHORT).show()
+        val taskName = editTextNewTask.text.toString()
+        when {
+            taskName.isEmpty() -> Toast.makeText(context, "Empty task name", Toast.LENGTH_SHORT).show()
+            taskName.length > 25 -> Toast.makeText(context, "Task name too long", Toast.LENGTH_SHORT).show()
+            else -> {
+                val task = Task(0, taskName)
+                viewModel.insert(task)
+            }
         }
     }
 }
