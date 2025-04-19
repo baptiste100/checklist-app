@@ -48,7 +48,7 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
         setRecyclerView(view)
         val editTextNewTask = view.findViewById<EditText>(R.id.editTextNewTask);
 
-        viewModel._allTasks.observe(viewLifecycleOwner) { tasks ->
+        viewModel.allTasks.observe(viewLifecycleOwner) { tasks ->
             taskAdapter.submitList(tasks)
         }
 

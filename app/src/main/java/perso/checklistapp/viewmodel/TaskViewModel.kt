@@ -14,7 +14,7 @@ import perso.checklistapp.model.Task
 
 class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val _taskDao = AppDatabase.getInstance(application).taskDao()
-    val _allTasks: LiveData<List<Task>> = _taskDao.getAll().asLiveData()
+    val allTasks: LiveData<List<Task>> = _taskDao.getAll().asLiveData()
 
     fun insert(task: Task) = viewModelScope.launch(Dispatchers.IO) {
         _taskDao.insert(task)
