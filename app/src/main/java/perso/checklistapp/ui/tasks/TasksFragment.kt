@@ -64,11 +64,5 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
         val recyclerViewTasks: RecyclerView = view.findViewById(R.id.recyclerViewTasks)
         recyclerViewTasks.layoutManager = LinearLayoutManager(context)
         recyclerViewTasks.adapter = taskAdapter
-        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing)
-        recyclerViewTasks.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-                outRect.bottom = spacingInPixels
-            }
-        })
     }
 }
