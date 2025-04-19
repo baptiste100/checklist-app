@@ -54,11 +54,9 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
 
         view.findViewById<Button>(R.id.buttonAddTask)
             .setOnClickListener {
-//                taskAdapter.notifyDataSetChanged()
+                val task = Task(0, editTextNewTask.text.toString())
+                viewModel.insert(task)
             }
-
-
-
     }
 
     private fun setRecyclerView(view: View) {

@@ -10,4 +10,7 @@ import perso.checklistapp.model.Task
 interface TaskDao {
     @Query("SELECT * FROM task")
     fun getAll(): Flow<List<Task>>
+
+    @Insert
+    fun insert(vararg task: Task)
 }
