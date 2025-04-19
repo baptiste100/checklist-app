@@ -24,6 +24,7 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
     private val viewModel: TaskViewModel by viewModels()
     private lateinit var recyclerViewTasks: RecyclerView
     private lateinit var taskAdapter: TaskAdapter
+    private lateinit var editTextNewTask: EditText
 
     private var _binding: FragmentTaskBinding? = null
 
@@ -47,22 +48,7 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView(view)
-
-        val editTextNewTask = view.findViewById<EditText>(R.id.editTextNewTask);
-
-        viewModel.allTasks.observe(viewLifecycleOwner) { tasks ->
-            taskAdapter.submitList(tasks)
-        }
-
-        view.findViewById<Button>(R.id.buttonAddTask)
-            .setOnClickListener {
-                if (editTextNewTask.text.toString().isNotEmpty()) {
-                    val task = Task(0, editTextNewTask.text.toString())
-                    viewModel.insert(task)
-                } else {
-                    Toast.makeText(context, "Empty task name", Toast.LENGTH_SHORT).show()
-                }
-            }
+        setViews(view)
     }
 
     private fun setRecyclerView(view: View) {
@@ -70,5 +56,27 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
         val recyclerViewTasks: RecyclerView = view.findViewById(R.id.recyclerViewTasks)
         recyclerViewTasks.layoutManager = LinearLayoutManager(context)
         recyclerViewTasks.adapter = taskAdapter
+    }
+
+    private fun setViews(view: View) {
+        editTextNewTask = view.findViewById(R.id.editTextNewTask);
+
+        viewModel.allTasks.observe(viewLifecycleOwner) { tasks ->
+            taskAdapter.submitList(tasks)
+        }
+
+        view.findViewById<Button>(R.id.buttonAddTask)
+            .setOnClickListener {
+                addTask()
+            }
+    }
+
+    private fun addTask() {
+        if (editTextNewTask.text.toString().isNotEmpty()) {
+            val task = Task(0, editTextNewTask.text.toString())
+            viewModel.insert(task)
+        } else {
+            Toast.makeText(context, "Empty task name", Toast.LENGTH_SHORT).show()
+        }
     }
 }
