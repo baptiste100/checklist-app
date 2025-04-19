@@ -2,24 +2,25 @@ package perso.checklistapp.ui.tasks
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import perso.checklistapp.R
 import perso.checklistapp.databinding.FragmentTaskBinding
-import perso.checklistapp.viewmodel.TasksViewModel
+import perso.checklistapp.db.AppDatabase
+import perso.checklistapp.model.Task
+import perso.checklistapp.viewmodel.TaskViewModel
 
 class TasksFragment : Fragment(R.layout.fragment_task) {
 
-    private val dataSet = mutableListOf("Téléphone", "Chargeur Tel", "Ordinateur", "Chargeur PC", "Livres", "Pain de mie", "Pomme")
-
+    private val viewModel: TaskViewModel by viewModels()
     private lateinit var recyclerViewTasks: RecyclerView
     private lateinit var taskAdapter: TaskAdapter
 
@@ -32,8 +33,6 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val taskViewModel =
-            ViewModelProvider(this).get(TasksViewModel::class.java)
         _binding = FragmentTaskBinding.inflate(inflater, container, false)
         val root: View = binding.root
         return root
@@ -48,15 +47,22 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView(view)
         val editTextNewTask = view.findViewById<EditText>(R.id.editTextNewTask);
+
+        viewModel._allTasks.observe(viewLifecycleOwner) { tasks ->
+            taskAdapter.submitList(tasks)
+        }
+
         view.findViewById<Button>(R.id.buttonAddTask)
             .setOnClickListener {
-                dataSet.add(editTextNewTask.text.toString());
-                taskAdapter.notifyDataSetChanged()
+//                taskAdapter.notifyDataSetChanged()
             }
+
+
+
     }
 
     private fun setRecyclerView(view: View) {
-        taskAdapter = TaskAdapter(dataSet)
+        taskAdapter = TaskAdapter()
         val recyclerViewTasks: RecyclerView = view.findViewById(R.id.recyclerViewTasks)
         recyclerViewTasks.layoutManager = LinearLayoutManager(context)
         recyclerViewTasks.adapter = taskAdapter
