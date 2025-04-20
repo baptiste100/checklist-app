@@ -1,6 +1,7 @@
 package perso.checklistapp.ui.tasks
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -13,6 +14,8 @@ import perso.checklistapp.ui.tasks.TaskViewHolder
 import perso.checklistapp.viewmodel.TaskViewModel
 
 class TaskAdapter(private val viewModel: TaskViewModel) : ListAdapter<Task, TaskViewHolder>(DIFF_CALLBACK) {
+
+    private var _editMode: Boolean = false
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Task>() {
@@ -37,6 +40,10 @@ class TaskAdapter(private val viewModel: TaskViewModel) : ListAdapter<Task, Task
         holder.getCheckBoxTask().setOnCheckedChangeListener(null)
         holder.getCheckBoxTask().text = task.taskName
         holder.getCheckBoxTask().setOnCheckedChangeListener { _, isChecked -> }
+        holder.getButtonDelete().visibility = when (_editMode) {
+            false -> View.GONE
+            true  -> View.VISIBLE
+        }
         holder.getButtonDelete().setOnClickListener {
             deleteTask(task)
         }
@@ -44,5 +51,9 @@ class TaskAdapter(private val viewModel: TaskViewModel) : ListAdapter<Task, Task
 
     private fun deleteTask(task: Task) {
         viewModel.delete(task)
+    }
+
+    fun setEditMode(editMode: Boolean) {
+        _editMode = editMode
     }
 }

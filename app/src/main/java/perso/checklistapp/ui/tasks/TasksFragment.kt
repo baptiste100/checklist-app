@@ -1,5 +1,6 @@
 package perso.checklistapp.ui.tasks
 
+import android.annotation.SuppressLint
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,6 +27,9 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
     private lateinit var recyclerViewTasks: RecyclerView
     private lateinit var taskAdapter: TaskAdapter
     private lateinit var editTextNewTask: EditText
+    private lateinit var buttonEdit: ImageButton
+
+    private var onEditMode: Boolean = false
 
     private var _binding: FragmentTaskBinding? = null
 
@@ -61,6 +65,7 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
 
     private fun setViews(view: View) {
         editTextNewTask = view.findViewById(R.id.editTextNewTask);
+        buttonEdit = view.findViewById(R.id.buttonEdit)
 
         viewModel.allTasks.observe(viewLifecycleOwner) { tasks ->
             taskAdapter.submitList(tasks)
@@ -68,6 +73,10 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
 
         view.findViewById<Button>(R.id.buttonAddTask).setOnClickListener {
             addTask()
+        }
+
+        buttonEdit.setOnClickListener {
+            changeMode()
         }
     }
 
@@ -81,5 +90,16 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
                 viewModel.insert(task)
             }
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun changeMode() {
+        onEditMode = !onEditMode
+        when (onEditMode) {
+            false -> buttonEdit.setImageResource(R.drawable.edit_icon)
+            true -> buttonEdit.setImageResource(R.drawable.croix_fond_violet)
+        }
+        taskAdapter.setEditMode(onEditMode)
+        taskAdapter.notifyDataSetChanged()
     }
 }
