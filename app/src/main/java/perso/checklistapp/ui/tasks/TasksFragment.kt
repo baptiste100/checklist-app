@@ -86,7 +86,7 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
             taskName.isEmpty() -> Toast.makeText(context, "Empty task name", Toast.LENGTH_SHORT).show()
             taskName.length > 25 -> Toast.makeText(context, "Task name too long", Toast.LENGTH_SHORT).show()
             else -> {
-                val task = Task(0, taskName)
+                val task = Task(0, null, taskName)
                 viewModel.insert(task)
             }
         }
