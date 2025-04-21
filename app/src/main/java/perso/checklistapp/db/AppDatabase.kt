@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import perso.checklistapp.dao.ListDao
 import perso.checklistapp.dao.TaskDao
 import perso.checklistapp.model.Task
+import perso.checklistapp.model.TaskList
 
-@Database(entities = [Task::class], version = 1)
+@Database(entities = [Task::class, TaskList::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
+    abstract fun listDao(): ListDao
 
     companion object {
         @Volatile
