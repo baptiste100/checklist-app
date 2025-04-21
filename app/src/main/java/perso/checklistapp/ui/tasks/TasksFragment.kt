@@ -90,6 +90,7 @@ class TasksFragment : Fragment(R.layout.fragment_task) {
                 viewModel.insert(task)
             }
         }
+        editTextNewTask.setText("")
     }
 
     @SuppressLint("NotifyDataSetChanged")
