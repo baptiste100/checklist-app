@@ -28,12 +28,12 @@ class TaskListAdapter(private val viewModel: ListViewModel) : ListAdapter<TaskLi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.task_view_holder, parent, false)
+            .inflate(R.layout.list_view_holder, parent, false)
         return ListViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val list = getItem(position)
-        holder.getEditTextListName().setText(list.listName)
+        holder.getTextViewListName().setText(list.listName)
     }
 }
