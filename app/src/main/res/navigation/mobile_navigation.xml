@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="perso.checklistapp.ui.dashboard.DashboardFragment"
+        android:name="perso.checklistapp.ui.lists.ListFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_list" />
 
     <fragment
         android:id="@+id/navigation_notifications"
