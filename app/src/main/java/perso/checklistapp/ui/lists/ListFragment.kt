@@ -12,7 +12,6 @@ import perso.checklistapp.databinding.FragmentListBinding
 class ListFragment : Fragment() {
 
     private var _binding: FragmentListBinding? = null
-
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -22,14 +21,15 @@ class ListFragment : Fragment() {
     ): View {
         _binding = FragmentListBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val textView: TextView = binding.textDashboard
-
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 }
