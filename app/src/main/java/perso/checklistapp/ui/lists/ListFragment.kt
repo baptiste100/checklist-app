@@ -54,7 +54,9 @@ class ListFragment : Fragment() {
     }
 
     private fun setRecyclerView(view: View) {
-        listAdapter = TaskListAdapter(viewModel)
+        listAdapter = TaskListAdapter(viewModel) { listId ->
+            Toast.makeText(context, "CLIC : $listId", Toast.LENGTH_SHORT).show()
+        }
         val recyclerViewLists: RecyclerView = view.findViewById(R.id.recyclerViewLists)
         recyclerViewLists.layoutManager = LinearLayoutManager(context)
         recyclerViewLists.adapter = listAdapter

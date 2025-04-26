@@ -10,7 +10,7 @@ import perso.checklistapp.model.Task
 import perso.checklistapp.model.TaskList
 import perso.checklistapp.viewmodel.ListViewModel
 
-class TaskListAdapter(private val viewModel: ListViewModel) : ListAdapter<TaskList, ListViewHolder>(DIFF_CALLBACK) {
+class TaskListAdapter(private val viewModel: ListViewModel, private val onItemClick: (Int) -> Unit) : ListAdapter<TaskList, ListViewHolder>(DIFF_CALLBACK) {
 
     private var _editMode: Boolean = false
 
@@ -29,11 +29,11 @@ class TaskListAdapter(private val viewModel: ListViewModel) : ListAdapter<TaskLi
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_view_holder, parent, false)
-        return ListViewHolder(view)
+        return ListViewHolder(view, onItemClick)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val list = getItem(position)
-        holder.getTextViewListName().setText(list.listName)
+        holder.bind(list)
     }
 }
