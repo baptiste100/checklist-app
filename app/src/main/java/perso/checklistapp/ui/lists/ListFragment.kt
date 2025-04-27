@@ -9,9 +9,11 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import perso.checklistapp.R
@@ -51,11 +53,16 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView(view)
         setViews(view)
+
+
     }
 
     private fun setRecyclerView(view: View) {
         listAdapter = TaskListAdapter(viewModel) { listId ->
-            Toast.makeText(context, "CLIC : $listId", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(
+                R.id.action_navigation_dashboard_to_listTasksFragment,
+                bundleOf("listId" to listId)
+            )
         }
         val recyclerViewLists: RecyclerView = view.findViewById(R.id.recyclerViewLists)
         recyclerViewLists.layoutManager = LinearLayoutManager(context)
