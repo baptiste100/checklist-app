@@ -17,9 +17,6 @@ interface ListDao {
     @Query("SELECT * FROM list WHERE id = :id")
     fun getListWithTasks(id: Int) : Flow<ListWithTasks>
 
-    @Query("SELECT * FROM list WHERE id = :id")
-    fun getOne(id: Int) : Flow<TaskList>
-
     @Insert
     fun insert(vararg list: TaskList)
 
