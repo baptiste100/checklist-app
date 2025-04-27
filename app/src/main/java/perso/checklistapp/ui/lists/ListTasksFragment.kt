@@ -1,6 +1,9 @@
 package perso.checklistapp.ui.tasks
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +13,8 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +27,8 @@ import perso.checklistapp.model.TaskList
 import perso.checklistapp.model.relation.ListWithTasks
 import perso.checklistapp.viewmodel.ListViewModel
 import perso.checklistapp.viewmodel.TaskViewModel
+import androidx.core.graphics.scale
+import androidx.core.graphics.drawable.toDrawable
 
 class ListTasksFragment : Fragment(R.layout.fragment_list_tasks) {
 
@@ -33,6 +40,7 @@ class ListTasksFragment : Fragment(R.layout.fragment_list_tasks) {
     private lateinit var textViewListName: TextView
     private lateinit var editTextNewTask: EditText
     private lateinit var buttonEdit: ImageButton
+    private lateinit var toolbar: Toolbar
 
     private var onEditMode: Boolean = false
 
@@ -69,23 +77,35 @@ class ListTasksFragment : Fragment(R.layout.fragment_list_tasks) {
         recyclerViewTasks.adapter = taskAdapter
     }
 
+    @SuppressLint("ResourceType")
     private fun setViews(view: View) {
+        toolbar = view.findViewById(R.id.toolbar)
         textViewListName = view.findViewById(R.id.textViewListName)
         editTextNewTask = view.findViewById(R.id.editTextNewTask)
         buttonEdit = view.findViewById(R.id.buttonEdit)
+
+        setBackButton()
 
         listViewModel.getListWithTasks(_listId).observe(viewLifecycleOwner) { listWithTasks ->
             taskAdapter.submitList(listWithTasks.tasks)
             textViewListName.text = listWithTasks.list.listName
         }
-
         view.findViewById<Button>(R.id.buttonAddTask).setOnClickListener {
             addTaskOnList()
         }
-
         buttonEdit.setOnClickListener {
             changeMode()
         }
+    }
+
+    private fun setBackButton() {
+        val originalBitmap: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.fleche_gauche)
+        val newWidth = originalBitmap.width / 4
+        val newHeight = originalBitmap.height / 4
+        val scaledBitmap: Bitmap = originalBitmap.scale(newWidth, newHeight)
+        val resizedDrawable = scaledBitmap.toDrawable(resources)
+        toolbar.navigationIcon = resizedDrawable
+        toolbar.setNavigationOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
     }
 
     private fun addTaskOnList() {
