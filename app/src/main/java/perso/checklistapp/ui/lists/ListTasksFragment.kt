@@ -33,6 +33,7 @@ import androidx.core.graphics.drawable.toDrawable
 class ListTasksFragment : Fragment(R.layout.fragment_list_tasks) {
 
     private var _listId: Int = 0
+    private lateinit var _list: TaskList
     private val taskViewModel: TaskViewModel by viewModels()
     private val listViewModel: ListViewModel by viewModels()
     private lateinit var recyclerViewTasks: RecyclerView
@@ -84,14 +85,20 @@ class ListTasksFragment : Fragment(R.layout.fragment_list_tasks) {
         editTextNewTask = view.findViewById(R.id.editTextNewTask)
         buttonEdit = view.findViewById(R.id.buttonEdit)
 
+
         setBackButton()
 
         listViewModel.getListWithTasks(_listId).observe(viewLifecycleOwner) { listWithTasks ->
             taskAdapter.submitList(listWithTasks.tasks)
             textViewListName.text = listWithTasks.list.listName
+            _list = listWithTasks.list
         }
         view.findViewById<Button>(R.id.buttonAddTask).setOnClickListener {
             addTaskOnList()
+        }
+        view.findViewById<ImageButton>(R.id.buttonDelete).setOnClickListener {
+            listViewModel.delete(_list)
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
         buttonEdit.setOnClickListener {
             changeMode()
