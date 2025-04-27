@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,13 +18,19 @@ import perso.checklistapp.R
 import perso.checklistapp.databinding.FragmentListTasksBinding
 import perso.checklistapp.databinding.FragmentTaskBinding
 import perso.checklistapp.model.Task
+import perso.checklistapp.model.TaskList
+import perso.checklistapp.model.relation.ListWithTasks
+import perso.checklistapp.viewmodel.ListViewModel
 import perso.checklistapp.viewmodel.TaskViewModel
 
 class ListTasksFragment : Fragment(R.layout.fragment_list_tasks) {
 
-    private val viewModel: TaskViewModel by viewModels()
+    private var _listId: Int = 0
+    private val taskViewModel: TaskViewModel by viewModels()
+    private val listViewModel: ListViewModel by viewModels()
     private lateinit var recyclerViewTasks: RecyclerView
     private lateinit var taskAdapter: TaskAdapter
+    private lateinit var textViewListName: TextView
     private lateinit var editTextNewTask: EditText
     private lateinit var buttonEdit: ImageButton
 
@@ -50,27 +57,30 @@ class ListTasksFragment : Fragment(R.layout.fragment_list_tasks) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _listId = arguments?.getInt("listId") ?: return
         setRecyclerView(view)
         setViews(view)
     }
 
     private fun setRecyclerView(view: View) {
-        taskAdapter = TaskAdapter(viewModel)
+        taskAdapter = TaskAdapter(taskViewModel)
         val recyclerViewTasks: RecyclerView = view.findViewById(R.id.recyclerViewTasks)
         recyclerViewTasks.layoutManager = LinearLayoutManager(context)
         recyclerViewTasks.adapter = taskAdapter
     }
 
     private fun setViews(view: View) {
-        editTextNewTask = view.findViewById(R.id.editTextNewTask);
+        textViewListName = view.findViewById(R.id.textViewListName)
+        editTextNewTask = view.findViewById(R.id.editTextNewTask)
         buttonEdit = view.findViewById(R.id.buttonEdit)
 
-        viewModel.allTasks.observe(viewLifecycleOwner) { tasks ->
-            taskAdapter.submitList(tasks)
+        listViewModel.getListWithTasks(_listId).observe(viewLifecycleOwner) { listWithTasks ->
+            taskAdapter.submitList(listWithTasks.tasks)
+            textViewListName.text = listWithTasks.list.listName
         }
 
         view.findViewById<Button>(R.id.buttonAddTask).setOnClickListener {
-            addTask()
+            addTaskOnList()
         }
 
         buttonEdit.setOnClickListener {
@@ -78,14 +88,14 @@ class ListTasksFragment : Fragment(R.layout.fragment_list_tasks) {
         }
     }
 
-    private fun addTask() {
+    private fun addTaskOnList() {
         val taskName = editTextNewTask.text.toString()
         when {
             taskName.isEmpty() -> Toast.makeText(context, "Empty task name", Toast.LENGTH_SHORT).show()
             taskName.length > 25 -> Toast.makeText(context, "Task name too long", Toast.LENGTH_SHORT).show()
             else -> {
-                val task = Task(0, null, taskName)
-                viewModel.insert(task)
+                val task = Task(0, _listId, taskName)
+                taskViewModel.insert(task)
             }
         }
         editTextNewTask.setText("")
