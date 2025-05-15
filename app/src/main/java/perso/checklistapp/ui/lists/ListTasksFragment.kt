@@ -13,7 +13,11 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,9 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import perso.checklistapp.R
 import perso.checklistapp.databinding.FragmentListTasksBinding
-import perso.checklistapp.databinding.FragmentTaskBinding
 import perso.checklistapp.model.Task
-import perso.checklistapp.model.TaskList
 import perso.checklistapp.model.relation.ListWithTasks
 import perso.checklistapp.viewmodel.ListViewModel
 import perso.checklistapp.viewmodel.TaskViewModel
@@ -97,7 +99,19 @@ class ListTasksFragment : Fragment(R.layout.fragment_list_tasks) {
             addTaskOnList()
         }
         view.findViewById<ImageButton>(R.id.buttonDelete).setOnClickListener {
-            deleteList()
+            val dialog = AlertDialog.Builder(requireContext())
+                .setTitle("Supprimer cette liste ? ")
+                .setMessage("La liste sera perdue a tout jamais")
+                .setPositiveButton("Supprimer") { dialog, _ ->
+                    deleteList()
+                    dialog.dismiss()
+                }
+                .setNegativeButton("Annuler") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .create()
+
+            dialog.show()
         }
         buttonEdit.setOnClickListener {
             changeMode()
