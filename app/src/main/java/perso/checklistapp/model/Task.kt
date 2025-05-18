@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 data class Task (
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "list_id") val listId: Int?,
-    @ColumnInfo(name = "task_name") val taskName: String
+    @ColumnInfo(name = "task_name") val taskName: String,
+    @ColumnInfo(name = "is_checked") val isChecked: Boolean = false
 )
 

@@ -15,6 +15,9 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE list_id = :id")
     fun getTasksOfList(id: Int) : Flow<List<Task>>
 
+    @Query("UPDATE task SET is_checked = :checked WHERE id = :taskId")
+    fun setChecked(taskId: Int, checked: Boolean)
+
     @Insert
     fun insert(vararg task: Task)
 

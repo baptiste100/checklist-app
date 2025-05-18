@@ -3,6 +3,9 @@ package perso.checklistapp.ui.tasks
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ListAdapter
@@ -37,14 +40,29 @@ class TaskAdapter(private val viewModel: TaskViewModel) : ListAdapter<Task, Task
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val task = getItem(position)
-        holder.getCheckBoxTask().setOnCheckedChangeListener(null)
-        holder.getCheckBoxTask().text = task.taskName
-        holder.getCheckBoxTask().setOnCheckedChangeListener { _, isChecked -> }
-        holder.getButtonDelete().visibility = when (_editMode) {
+        val checkbox = holder.getCheckBoxTask()
+        val deleteButton = holder.getButtonDelete()
+
+        setCheckbox(checkbox, task)
+        setDeleteButton(deleteButton, task)
+    }
+
+    private fun setCheckbox(checkbox: CheckBox, task: Task) {
+        checkbox.setOnCheckedChangeListener(null)
+        checkbox.text = task.taskName
+        checkbox.isChecked = task.isChecked
+
+        checkbox.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setChecked(task.id, isChecked)
+        }
+    }
+
+    private fun setDeleteButton(deleteButton: ImageButton, task: Task) {
+        deleteButton.visibility = when (_editMode) {
             false -> View.GONE
             true  -> View.VISIBLE
         }
-        holder.getButtonDelete().setOnClickListener {
+        deleteButton.setOnClickListener {
             deleteTask(task)
         }
     }

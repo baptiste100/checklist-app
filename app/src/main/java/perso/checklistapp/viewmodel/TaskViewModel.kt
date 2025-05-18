@@ -19,6 +19,10 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getTasksOfList(listId: Int): LiveData<List<Task>> = _taskDao.getTasksOfList(listId).asLiveData()
 
+    fun setChecked(taskId: Int, checked: Boolean) = viewModelScope.launch(Dispatchers.IO) {
+        _taskDao.setChecked(taskId, checked)
+    }
+
     fun insert(task: Task) = viewModelScope.launch(Dispatchers.IO) {
         _taskDao.insert(task)
     }
